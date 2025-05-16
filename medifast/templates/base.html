@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %} Medical Home Page{% endblock %}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/styles.css')}}"
+    />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <img
+            src="{{ url_for('static', filename='img/MEDIFast-logo.png') }}"
+            alt="MedSupply Hub Logo"
+            class="logo-img"
+          />
+        </div>
+        <div class="navbar-content">
+          <ul class="nav-links">
+            <li><a href="{{url_for('main.home')}}">Home</a></li>
+            <li><a href="{{url_for('main.productDetail')}}">Products</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+          <ul class="nav-actions">
+            <li>
+              <a href="#"><span class="icon">🛒</span> Cart</a>
+            </li>
+            <li>
+              <a href="{{url_for('main.login')}}"
+                ><span class="icon">🔐</span> Login</a
+              >
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div class="container">
+      <main
+        class="d-flex flex-column justify-content-center align-items-center"
+      >
+        {% with messages = get_flashed_messages(category_filter='error') %} {%
+        if messages %}
+        <div
+          class="alert alert-danger text-center p-2"
+          role="alert"
+          style="margin: 0px"
+        >
+          {% for message in messages %} {{ message }} {% endfor %}
+        </div>
+        {% endif %} {% endwith %} {% block content %} {% endblock %}
+      </main>
+    </div>
+    <footer>
+      <p>&copy; 2025 MediFast Online Store. All rights reserved.</p>
+    </footer>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

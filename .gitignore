@@ -1,0 +1,21 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+
+# Environment
+.env
+myenv/
+.myenv/
+venv/
+
+# Flask / SQLite
+instance/
+*.db
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/

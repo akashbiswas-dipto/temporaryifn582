@@ -1,0 +1,215 @@
+{% extends "base.html"%} {% block title %} Login Page {% endblock %} {%block
+content%}
+
+<section class="slider">
+  <div class="carousel">
+    <div class="carousel-track">
+      <img
+        src="{{url_for('static', filename='img/banner 1.jpg')}}"
+        alt="Medical Equipment"
+      />
+      <img
+        src="{{url_for('static', filename='img/banner 2.jpg')}}"
+        alt="Health Supplies"
+      />
+      <img
+        src="{{url_for('static', filename='img/banner 3.jpg')}}"
+        alt="Hospital Tools"
+      />
+    </div>
+  </div>
+</section>
+
+<main>
+  <section id="products" class="product-grid">
+    <h2>Medicines</h2>
+    <div class="product-category">
+      <div class="product-card">
+        <img
+          src="{{url_for('static', filename='img/paracetamol.png')}}"
+          alt="Paracetamol"
+        />
+        <h3>Paracetamol</h3>
+        <p>Pain and fever relief tablets (500mg).</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img
+          src="{{url_for('static', filename='img/amoxicillin.png')}}"
+          alt="Amoxicillin"
+        />
+        <h3>Amoxicillin</h3>
+        <p>Antibiotic capsules (500mg).</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img
+          src="{{url_for('static', filename='img/ibuprofen.png')}}"
+          alt="Ibuprofen"
+        />
+        <h3>Ibuprofen</h3>
+        <p>Anti-inflammatory and pain relief tablets.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img
+          src="{{url_for('static', filename='img/ibuprofen.png.png')}}"
+          alt="Antacid"
+        />
+        <h3>Antacid</h3>
+        <p>Chewable tablets for heartburn and indigestion.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img
+          src="{{url_for('static', filename='img/loratidine.png')}}"
+          alt="Loratadine"
+        />
+        <h3>Loratadine</h3>
+        <p>Antihistamine for allergy relief.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img
+          src="{{url_for('static', filename='img/metformin.png')}}"
+          alt="Metformin"
+        />
+        <h3>Metformin</h3>
+        <p>Oral medication for diabetes management.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img
+          src="{{url_for('static', filename='img/antacid.png')}}"
+          alt="Aspirin"
+        />
+        <h3>Aspirin</h3>
+        <p>Low-dose tablets for pain relief and heart health.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img
+          src="{{url_for('static', filename='img/antacid.png')}}"
+          alt="Omeprazole"
+        />
+        <h3>Omeprazole</h3>
+        <p>Proton pump inhibitor for acid reflux.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img
+          src="{{url_for('static', filename='img/antacid.png')}}"
+          alt="Salbutamol Inhaler"
+        />
+        <h3>Salbutamol Inhaler</h3>
+        <p>Reliever inhaler for asthma attacks.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="images/multivitamins.png" alt="Multivitamins" />
+        <h3>Multivitamins</h3>
+        <p>Daily essential vitamins and minerals.</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+
+    <h2>Protective Equipment</h2>
+    <div class="product-category">
+      <div class="product-card">
+        <img src="images/Face-mask.png" alt="Face Mask" />
+        <h3>Face Mask</h3>
+        <p>3-layer protective surgical face masks.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="images/Gloves.png" alt="Gloves" />
+        <h3>Gloves</h3>
+        <p>Latex-free disposable gloves.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="images/Syringes.png" alt="Syringes" />
+        <h3>Syringes</h3>
+        <p>Single-use sterile syringes.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="images/Bandages.png" alt="Bandages" />
+        <h3>Bandages</h3>
+        <p>Adhesive and gauze bandage packs.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="images/Sanitizer.png" alt="Sanitizer" />
+        <h3>Sanitizer</h3>
+        <p>Alcohol-based hand sanitizer bottles.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="images/Disinfectant.png" alt="Disinfectant" />
+        <h3>Disinfectant</h3>
+        <p>Hospital-grade disinfectant solution.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="images/medical-tape.png" alt="Medical Tape" />
+        <h3>Medical Tape</h3>
+        <p>Hypoallergenic adhesive tape rolls.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="images/first-aid-kit.png" alt="First Aid Kit" />
+        <h3>First Aid Kit</h3>
+        <p>Comprehensive emergency medical kit.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="images/IV-drip-set.png" alt="IV Drip Set" />
+        <h3>IV Drip Set</h3>
+        <p>Standard medical intravenous set.</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+
+    <h2>Diagnostic Tools</h2>
+    <div class="product-category">
+      <div class="product-card">
+        <img src="images/Thermometer.png" alt="Thermometer" />
+        <h3>Thermometer</h3>
+        <p>Accurate digital thermometer for medical use.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img
+          src="images/Blood-pressure-monitor.png"
+          alt="Blood Pressure Monitor"
+        />
+        <h3>Blood Pressure Monitor</h3>
+        <p>Automatic BP monitor with large display.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="images/Stethoscope.png" alt="Stethoscope" />
+        <h3>Stethoscope</h3>
+        <p>High-quality acoustic stethoscope.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="images/Thermal-scanner.png" alt="Thermal Scanner" />
+        <h3>Thermal Scanner</h3>
+        <p>Contactless thermal scanning device.</p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <img src="images/Oximeter.png" alt="Oximeter" />
+        <h3>Oximeter</h3>
+        <p>Finger pulse oximeter with OLED display.</p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}
+<!-- <footer>
+    <p>&copy; 2025 MediFast Online Store. All rights reserved.</p>
+  </footer> -->
