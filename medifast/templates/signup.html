@@ -1,10 +1,78 @@
-{% extends "base.html" %} {% block title %} Sing Up Page {% endblock %} {%
-import 'bootstrap5/form.html' as wtf %} {%block content%}
+{% extends "base.html" %} {% block title %} Sing Up Page {% endblock %} {%block
+content%} {% with messages = get_flashed_messages(category_filter='error') %} {%
+if messages %} {% for message in messages %}
+<div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+  {{ message }}
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+  {% endfor %}
+</div>
+{% endif %} {% endwith %}
 
-<div class="card mt-3" style="width: 40rem">
+<div class="card mt-3 mb-3" style="width: 40rem">
   <div class="card-body">
     <h1 class="card-title mb-3 text-center">Sign Up</h1>
-    <div class="mb-3">{{ wtf.render_form(form)}}</div>
+    <div>
+      <p>field with <span style="color: red">*</span> is mandatory.</p>
+    </div>
+    <div class="mb-3 h3">
+      <form action="/signup" method="POST" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+          {{ form.username.label(class="form-label h3")}}
+          {{form.username(class="form-control")}} {% for error in
+          form.username.errors %}
+          <p class="text-danger h6">{{ error }}</p>
+          {% endfor %}
+        </div>
+        <div class="mb-3">
+          {{ form.email.label(class="form-label h3")}}
+          {{form.email(class="form-control")}} {% for error in form.email.errors
+          %}
+          <p class="text-danger h6">{{ error }}</p>
+          {% endfor %}
+        </div>
+        <div class="mb-3">
+          {{ form.password.label(class="form-label h3")}}
+          {{form.password(class="form-control")}} {% for error in
+          form.password.errors %}
+          <p class="text-danger h6">{{ error }}</p>
+          {% endfor %}
+        </div>
+        <div class="mb-3">
+          {{ form.confirm.label(class="form-label h3")}}
+          {{form.confirm(class="form-control")}}
+        </div>
+        <div class="mb-3">
+          {{ form.firstname.label(class="form-label h3")}}
+          {{form.firstname(class="form-control")}} {% for error in
+          form.firstname.errors %}
+          <p class="text-danger">{{ error }}</p>
+          {% endfor %}
+        </div>
+        <div class="mb-3">
+          {{ form.surname.label(class="form-label h3")}}
+          {{form.surname(class="form-control")}} {% for error in
+          form.surname.errors %}
+          <p class="text-danger">{{ error }}</p>
+          {% endfor %}
+        </div>
+        <div class="mb-3">
+          {{ form.phone.label(class="form-label h3")}}
+          {{form.phone(class="form-control")}} {% for error in form.phone.errors
+          %}
+          <p class="text-danger">{{ error }}</p>
+          {% endfor %}
+        </div>
+        <div class="text-center mt-3">
+          {{ form.submit(class="btn btn-danger")}}
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 

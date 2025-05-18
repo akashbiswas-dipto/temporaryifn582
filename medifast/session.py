@@ -14,7 +14,7 @@ def get_user():
             phone=user['phone'],
             username=user['username']
         )
-    print("user:", "")
+    print("user", None)
     return None
 
 

@@ -1,5 +1,17 @@
 {% extends "base.html"%} {% block title %} Login Page {% endblock %} {%block
-content%}
+content%} {% with messages = get_flashed_messages(category_filter='info') %} {%
+if messages %} {% for message in messages %}
+<div class="alert alert-primary alert-dismissible fade show mt-3" role="alert">
+  {{ message }}
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+  {% endfor %}
+</div>
+{% endif %} {% endwith %}
 
 <section class="slider">
   <div class="carousel">
