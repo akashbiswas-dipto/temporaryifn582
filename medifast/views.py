@@ -1,9 +1,10 @@
 from flask import render_template, Blueprint, Flask, request, flash, redirect, url_for, session
-from medifast.forms import SignUpForm
+from medifast.forms import SignUpForm, LogInForm
 from medifast.db import check_for_user, add_user
+from medifast.session import get_user
 import re
 
-
+PRIVATE_KEY="medifasthashkey"
 emailReg = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 
 bp = Blueprint('main', __name__)
@@ -18,38 +19,51 @@ def productDetail():
 
 @bp.route('/login', methods=["GET", "POST"])
 def login():
-    if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("password")
-        print(email, password)
-    return render_template("login.html")
+    form = LogInForm()
+    if form.validate_on_submit():
+        print("email:", form.email.data, "password:", form.password.data)
+        hashed_pw = str(hash(PRIVATE_KEY + form.password.data))
+        print('hashed_pw', hashed_pw)
+        user = check_for_user(form.email.data,  hashed_pw)
+        if not user:
+            flash("Email / password is invalid.", "error")
+            return redirect(url_for('main.login'))
+        session['user'] = {
+            'user_id': user.id,
+            'firstname': user.firstname,
+            'surname': user.surname,
+            'email': user.email,
+            'phone': user.phone,
+            'username': user.username
+        }
+        flash("Login successfully", "info")
+        print("user_id:", get_user())
+        return redirect(url_for("main.home"))
+    if request.method == "POST":     
+        print("Error", form.errors)
+        flash("Form validation failed.", 'error')
+    return render_template("login.html", form=form)
 
 @bp.route("/signup", methods=["GET", "POST"])
 def signup():
     form = SignUpForm()
-    if request.method == "POST":
-        if form.validate_on_submit():
-            # check if the user has registered
-            print(f"username:", form.username.data, "password:", form.password.data)
-            user = check_for_user(form.username.data, form.password.data)
+    if form.validate_on_submit():
+        try:
+            password = form.password.data
+            hashed_pw = str(hash(PRIVATE_KEY + password))
+            user = check_for_user(form.username.data, hashed_pw)
             if user:
                 flash("User already exists", "error")
-                return redirect(url_for("main.signup"))
-            add_user(form)
-            flash("Account Signed Up!")
+                return redirect(url_for("main.signup"))             
+            add_user(form,hashed_pw)
+            flash("Thanks for registering!!!", 'info')
             return redirect(url_for("main.login"))
-            # username = request.form.get("username")
-            # firstName = request.form.get("firstname")
-            # lastName = request.form.get("lastName")
-            # email = request.form.get("email")
-            # password = request.form.get("password")
-            # confirmPassword = request.form.get("confirmPassword")
-        # if not re.fullmatch(emailReg, email):
-        #     flash("Email format is not right")
-        #     return redirect(url_for("main.singup"))
-        # if len(password) > 8:
-        #     flash("Password allows only 8 characters or digits.", "error")
-        #     return redirect(url_for("main.signup"))
+        except:
+            flash("Database issue. Try Later.", "error")
+            return redirect(url_for("main.signup"))
+    elif request.method == "POST":
+        print("Form error:",form.errors)
+        flash("Form validation failed.", "error")
         # if password != confirmPassword:
         #     flash("The password is not the same with confirm password", "error")
         #     return redirect(url_for("main.signup"))
@@ -61,6 +75,5 @@ def signup():
 @bp.route("/logout")
 def logout():
     session.pop('user', None)
-    session.pop('logged_in', None)
     flash("You have been logged out.")
     return redirect(url_for('main.index'))
