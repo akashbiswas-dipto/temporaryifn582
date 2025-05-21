@@ -10,6 +10,7 @@ create table Users (
     password varchar(255) not null,
     email varchar(255) not null unique,
     phone varchar(20) not null,
+    role varchar(10) not null,
 	primary key (id)
 );
 

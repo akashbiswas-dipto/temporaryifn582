@@ -36,11 +36,27 @@
             <li>
               <a href="#"><span class="icon">🛒</span> Cart</a>
             </li>
+            {% if session["user"] %}
             <li>
-              <a href="{{url_for('main.login')}}"
-                ><span class="icon">🔐</span> Login</a
+              <span>Hi, {{session["user"].username}}</span>
+            </li>
+            <li>
+              <a href="{{url_for('main.logout')}}"
+                ><span class="icon"></span>Logout</a
               >
             </li>
+            {% else %}
+            <li>
+              <a href="{{url_for('main.login')}}"
+                ><span class="icon">🔐</span>Login</a
+              >
+            </li>
+            <li>
+              <a href="{{url_for('main.signup')}}"
+                ><span class="icon"></span>Sign Up</a
+              >
+            </li>
+            {% endif%}
           </ul>
         </div>
       </nav>

@@ -13,61 +13,70 @@ if messages %} {% for message in messages %}
 </div>
 {% endif %} {% endwith %}
 
-<div class="card mt-3 mb-3" style="width: 40rem">
+<div class="card mt-3 mb-3" style="width: 20rem">
   <div class="card-body">
     <h1 class="card-title mb-3 text-center">Sign Up</h1>
     <div>
       <p>field with <span style="color: red">*</span> is mandatory.</p>
     </div>
-    <div class="mb-3 h3">
+    <div class="mb-3 h4">
       <form action="/signup" method="POST" novalidate>
         {{ form.hidden_tag() }}
         <div class="mb-3">
-          {{ form.username.label(class="form-label h3")}}
+          {{ form.username.label(class="form-label h4")}}
           {{form.username(class="form-control")}} {% for error in
           form.username.errors %}
           <p class="text-danger h6">{{ error }}</p>
           {% endfor %}
         </div>
         <div class="mb-3">
-          {{ form.email.label(class="form-label h3")}}
+          {{ form.email.label(class="form-label h4")}}
           {{form.email(class="form-control")}} {% for error in form.email.errors
           %}
           <p class="text-danger h6">{{ error }}</p>
           {% endfor %}
         </div>
         <div class="mb-3">
-          {{ form.password.label(class="form-label h3")}}
+          {{ form.password.label(class="form-label h4")}}
           {{form.password(class="form-control")}} {% for error in
           form.password.errors %}
           <p class="text-danger h6">{{ error }}</p>
           {% endfor %}
         </div>
         <div class="mb-3">
-          {{ form.confirm.label(class="form-label h3")}}
+          {{ form.confirm.label(class="form-label h4")}}
           {{form.confirm(class="form-control")}}
         </div>
         <div class="mb-3">
-          {{ form.firstname.label(class="form-label h3")}}
+          {{ form.firstname.label(class="form-label h4")}}
           {{form.firstname(class="form-control")}} {% for error in
           form.firstname.errors %}
-          <p class="text-danger">{{ error }}</p>
+          <p class="text-danger h6">{{ error }}</p>
           {% endfor %}
         </div>
         <div class="mb-3">
-          {{ form.surname.label(class="form-label h3")}}
+          {{ form.surname.label(class="form-label h4")}}
           {{form.surname(class="form-control")}} {% for error in
           form.surname.errors %}
-          <p class="text-danger">{{ error }}</p>
+          <p class="text-danger h6">{{ error }}</p>
           {% endfor %}
         </div>
         <div class="mb-3">
-          {{ form.phone.label(class="form-label h3")}}
+          {{ form.phone.label(class="form-label h4")}}
           {{form.phone(class="form-control")}} {% for error in form.phone.errors
           %}
-          <p class="text-danger">{{ error }}</p>
+          <p class="text-danger h6">{{ error }}</p>
           {% endfor %}
         </div>
+        <!-- Privacy TC -->
+        <div class="mb-3">
+          {{form.tc(class="form-check-input me-1 h6", id="tc")}} {{
+          form.tc.label(class="form-check-label h6", for="tc")}} {% for error in
+          form.tc.errors %}
+          <p class="text-danger h6">{{ error }}</p>
+          {% endfor %}
+        </div>
+        <!-- TC end -->
         <div class="text-center mt-3">
           {{ form.submit(class="btn btn-danger")}}
         </div>
