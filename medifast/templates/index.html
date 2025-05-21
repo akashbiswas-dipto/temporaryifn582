@@ -36,7 +36,19 @@ if messages %} {% for message in messages %}
   <section id="products" class="product-grid">
     <h2>Medicines</h2>
     <div class="product-category">
+      {% if products %} {% for product in products %}
       <div class="product-card">
+        <img
+          src="{{url_for('static', filename='img/' + product.img)}}"
+          alt="Paracetamol"
+        />
+        <h3>{{product.title}}</h3>
+        <p>{{ product.description}}</p>
+        <p>{{ product.price}}</p>
+        <button>Add to Cart</button>
+      </div>
+      {% endfor %} {% endif %}
+      <!-- <div class="product-card">
         <img
           src="{{url_for('static', filename='img/paracetamol.png')}}"
           alt="Paracetamol"
@@ -65,7 +77,7 @@ if messages %} {% for message in messages %}
       </div>
       <div class="product-card">
         <img
-          src="{{url_for('static', filename='img/ibuprofen.png.png')}}"
+          src="{{url_for('static', filename='img/ibuprofen.png')}}"
           alt="Antacid"
         />
         <h3>Antacid</h3>
@@ -80,7 +92,7 @@ if messages %} {% for message in messages %}
         <h3>Loratadine</h3>
         <p>Antihistamine for allergy relief.</p>
         <button>Add to Cart</button>
-      </div>
+      </div> -->
       <div class="product-card">
         <img
           src="{{url_for('static', filename='img/metformin.png')}}"
