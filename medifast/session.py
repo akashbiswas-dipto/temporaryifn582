@@ -1,5 +1,6 @@
-from medifast.models import UserInfo
-
+from medifast.db import get_product
+from medifast.models import UserInfo, ShoppingCart, ShoppingCartItem, Product, Order, OrderStatus
+from uuid import uuid4
 from flask import session
 
 def get_user():
@@ -14,9 +15,60 @@ def get_user():
             phone=user['phone'],
             username=user['username'],
             password="",
-            role=user['role']
+            user_type=user['user_type']
         )
     print("user", None)
     return None
+    
+def get_shoppingcart():
+    shoppingcart_data = session.get("shoppingcart")
+    print("in session", shoppingcart['items'][0])
+    shoppingcart = ShoppingCart()
+    if isinstance(shoppingcart, dict):
+        for item in shoppingcart_data.get('items', []):
+            product = get_product(item['product']['id'])
+            print("product from db", product)
+            if product:
+                shoppingcart.add_item(ShoppingCartItem(
+                    id=str(item['id']),
+                    product=product,
+                    quantity=product['quantity']
+                ))
+    return shoppingcart
 
+def _save_shoppingcart_to_session(shoppingcart):
+    session['shoppingcart'] = {
+        'items': [
+            {
+                'id': item.id,
+                'quantity': item.quantity,
+                'product': {item.product.id}
+            } for item in shoppingcart.items
+        ]
+    }
+
+def add_to_shoppingcart(product_id, quantity=1):
+    shoppingcart = get_shoppingcart()
+    shoppingcart.add_item(ShoppingCartItem(product=get_product(product_id), quantity=quantity))
+    _save_shoppingcart_to_session(shoppingcart)
+
+def remove_from_shoppingcart(shoppingcart_item_id):
+    shoppingcart = get_shoppingcart()
+    shoppingcart.remove_item(shoppingcart_item_id)
+    _save_shoppingcart_to_session(shoppingcart)
+
+def empty_shoppingcart():
+    session['shoppingcart'] = {
+        'items': []
+    }
+
+def add_order(shoppingcart):
+    return Order(
+        id=None,
+        status=OrderStatus
+    )
+    pass
+
+def get_order():
+    pass
 

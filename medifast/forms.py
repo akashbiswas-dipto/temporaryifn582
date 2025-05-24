@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms.fields import SubmitField, StringField, PasswordField,BooleanField
-from wtforms.validators import InputRequired, DataRequired, email, EqualTo, Length
+from wtforms.fields import SubmitField, StringField, PasswordField,BooleanField,SelectField
+from wtforms.validators import InputRequired, DataRequired, email, EqualTo, Length, AnyOf
 
 class SignUpForm(FlaskForm):
     """Form for user sign up."""
@@ -19,3 +19,13 @@ class LogInForm(FlaskForm):
     email = StringField("Email:", validators= [InputRequired(), email()])
     password = StringField("Password:", validators=[InputRequired()])
     submit = SubmitField("Log In")
+
+class OrderForm(FlaskForm):
+    """Form for user to order"""
+    address = StringField("Address:", validators=[InputRequired()])
+    customer_name = StringField("Name:", validators= [InputRequired()])
+    customer_email = StringField("Email:", validators = [InputRequired(), email()])
+    customer_phone = StringField("Phone:", validators = [InputRequired()])
+    delivery_type = SelectField("Delivery Type:", AnyOf=([0,1,2]), validators=[DataRequired()])
+    payment_type = SelectField("Payment Method:", AnyOf=([0,1]), validators=[DataRequired()])
+
