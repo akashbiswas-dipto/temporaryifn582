@@ -46,6 +46,11 @@ def login():
         flash("Form validation failed.", 'error')
     return render_template("login.html", form=form)
 
+@bp.route("/carts")
+def carts():
+    return render_template("basket.html")
+
+
 @bp.route("/signup", methods=["GET", "POST"])
 def signup():
     form = SignUpForm()
