@@ -77,11 +77,11 @@ class ShoppingCart:
 @dataclass
 class Order:
     id: str
-    status: OrderStatus = OrderStatus.PENDING
+    status: OrderStatus
     user_id: str
-    amount: float = 0.0
-    delivery_type: int = 0
-    payment_type: int = 0
+    amount: float
+    delivery_type: int
+    payment_type: int
     address: str
     customer_name: str
     customer_phone: str

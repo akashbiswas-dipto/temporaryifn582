@@ -1,4 +1,59 @@
 {% extends "base.html" %} {% block title %} Product Details {% endblock %}
 {%block content%}
-<h1>Product</h1>
+<div class="product_detail">
+  <h1>Remind me to put slider instead of regular picture</h1>
+  <div class="images">
+    <div class="top_img">
+      <img
+        src="{{url_for('static',filename='img/metformin.png')}}"
+        class="top_img1"
+      />
+    </div>
+    <div class="bottom_img">
+      <div class="img_content">
+        <img
+          src="{{url_for('static',filename='img/metformin.png')}}"
+          class="img_bottom"
+        />
+      </div>
+
+      <div class="img_content">
+        <img
+          src="{{url_for('static',filename='img/metformin.png')}}"
+          class="img_bottom"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="product_doc">
+    <h1>Product Title</h1>
+    <h2>$10.00</h2>
+    <p>Product Description</p>
+    <select name="quantity" id="qty">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option></select
+    ><br />
+    <div class="rating">
+      <input type="radio" name="rating" value="1" /><i></i>
+      <input type="radio" name="rating" value="2" /><i></i>
+      <input type="radio" name="rating" value="3" /><i></i>
+      <input type="radio" name="rating" value="4" /><i></i>
+      <input type="radio" name="rating" value="5" /><i></i>
+    </div>
+    <a href="">Add to Cart</a>
+  </div>
+  <div class="suggestion">
+    <h1>Tailored choices, powered by insight.</h1>
+    <div class="suggestion_container">
+      <div class="container_s"></div>
+      <div class="container_s"></div>
+      <div class="container_s"></div>
+      <div class="container_s"></div>
+      <div class="container_s"></div>
+    </div>
+  </div>
+</div>
 {% endblock %}

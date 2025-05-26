@@ -38,7 +38,7 @@ def add_login_record(user_id):
 def add_logout_record(user_id):
     logout_time = datetime.now()
     cur = mysql.connection.cursor()
-    cur.execute("""INSERT INTO login_record (logout_time) values (%s) WHERE user_id = %s and logout_time is null """, (logout_time, user_id))
+    cur.execute("""UPDATE login_record set logout_time=(%s) WHERE user_id = %s and logout_time is null ORDER BY login_time desc """, (logout_time, user_id))
     mysql.connection.commit()
     cur.close() 
 
@@ -46,7 +46,7 @@ def get_products():
     cur = mysql.connection.cursor()
     cur.execute("""
         SELECT id, name, description, price, category, quantity, keyword, prescription, img1, img2,img3 
-        FROM products
+        FROM product
     """)
     rows = cur.fetchall()
     cur.close()

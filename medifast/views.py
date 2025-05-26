@@ -19,28 +19,30 @@ def home():
 def productDetail():
     return render_template("productdetail.html")
 
-@bp.route("/shoppingcart")
+# shoppingcart page
+@bp.route("/cart")
 @login_required
-def shoppingcart():
-    items = get_shoppingcart()
-    return render_template("shoppingcart.html", items=items)
+def cart():
+    cart = get_shoppingcart()
+    return render_template("basket.html", cart=cart)
 
-@bp.post('/shoppingcart/<int:product_id>/')
+
+@bp.post('/cart/<int:product_id>/')
 @login_required
 def add_item_to_shoppingcart(product_id):
     add_to_shoppingcart(product_id)
-    return redirect(url_for('main.shoppingcart'))
+    return redirect(url_for('main.cart'))
 
 
-@bp.post('/shoppingcart/<int:product_id>/<int:quantity>/')
+@bp.post('/cart/<int:product_id>/<int:quantity>/')
 @login_required
 def add_item_to_shoppingcart_with_qty(product_id, quantity):
     add_to_shoppingcart(product_id, quantity)
-    return redirect(url_for('main.shoppingcart'))
+    return redirect(url_for('main.cart'))
 
-@bp.route("/order", methods=["GET", "POST"])
+@bp.route("/checkout", methods=["GET", "POST"])
 @login_required
-def order():
+def checkout():
     form = OrderForm()
     shoppingcart = get_shoppingcart()
     user = get_user()

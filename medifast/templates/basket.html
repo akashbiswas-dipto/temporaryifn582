@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block title %}Your Basket{% endblock %} {% block
+content %}
+<div class="container py-5">
+  <h2>Your Shopping Basket</h2>
+
+  {% if cart %} {% for item in cart.items %}
+  <div class="products mb-4">
+    <div class="row align-items-center">
+      <div class="col-md-4">
+        <img
+          src="{{ url_for('static', filename='img/' ~ item.product.img1) }}"
+          alt="{{ item.product.name }}"
+          class="img-fluid rounded"
+          style="width: 250px"
+        />
+      </div>
+      <div class="col-md-8">
+        <h4>{{ item.product.name }}</h4>
+        <p>{{ item.product.description }}</p>
+        <p>
+          <strong>Price:</strong> ${{ '%.2f' | format(item.product.price) }}
+        </p>
+        <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+        <p>
+          <strong>Item Total:</strong> ${{ '%.2f' | format(item.total_price())
+          }}
+        </p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  <!-- Summary Section -->
+  <div class="summary border-top pt-4">
+    <h5>Order Summary</h5>
+    <ul class="list-unstyled">
+      <!-- <li><strong>Total:</strong> ${{ '%.2f' | format(cart.total_cost()) }}</li> -->
+    </ul>
+    <a href="{{ url_for('main.checkout') }}">
+      <button class="btn btn-success w-100" style="background-color: #0a5275">
+        Proceed to Checkout
+      </button>
+    </a>
+  </div>
+
+  {% else %}
+  <p class="text-muted">Your basket is empty.</p>
+  {% endif %}
+</div>
+{% endblock %}

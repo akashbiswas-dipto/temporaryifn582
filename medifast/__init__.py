@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from flask_mysqldb import MySQL
-from flask_bootstrap import Bootstrap
+from flask_bootstrap import Bootstrap4
 
 mysql = MySQL()
 
@@ -17,7 +17,7 @@ def create_app():
 
     mysql.init_app(app)
 
-    bootstrap = Bootstrap(app)
+    bootstrap = Bootstrap4(app)
     
     #importing modules here to avoid circular references, register blueprints of routes
     from . import views

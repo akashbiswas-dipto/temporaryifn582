@@ -21,7 +21,6 @@ def get_user():
     
 def get_shoppingcart():
     shoppingcart_data = session.get("shoppingcart")
-    print("in session", shoppingcart['items'][0])
     shoppingcart = ShoppingCart()
     if isinstance(shoppingcart, dict):
         for item in shoppingcart_data.get('items', []):

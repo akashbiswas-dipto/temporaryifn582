@@ -43,7 +43,7 @@ create table orders (
     user_id int,
     product_id varchar(255),
     amount DECIMAL(10,2),
-	order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+	order_date DATETIME,
     delivery_type int default 0,
     address varchar(255) not null,
     payment_type int default 0,

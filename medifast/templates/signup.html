@@ -20,7 +20,7 @@ if messages %} {% for message in messages %}
       <p>field with <span style="color: red">*</span> is mandatory.</p>
     </div>
     <div class="mb-3 h4">
-      <form action="/signup" method="POST" novalidate>
+      <form action="url_for('main.signup')" method="POST" novalidate>
         {{ form.hidden_tag() }}
         <div class="mb-3">
           {{ form.username.label(class="form-label h4")}}
