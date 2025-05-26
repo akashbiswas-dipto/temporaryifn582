@@ -77,9 +77,15 @@ class ShoppingCart:
 @dataclass
 class Order:
     id: str
-    status: OrderStatus
-    user: UserInfo
+    status: OrderStatus = OrderStatus.PENDING
+    user_id: str
     amount: float = 0.0
+    delivery_type: int = 0
+    payment_type: int = 0
+    address: str
+    customer_name: str
+    customer_phone: str
+    customer_email: str
     items: List[ShoppingCartItem] = field(default_factory=list)
     date: datetime = field(default_factory=lambda: datetime.now())
 

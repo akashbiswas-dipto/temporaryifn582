@@ -39,7 +39,7 @@ if messages %} {% for message in messages %}
       {% if products %} {% for product in products %}
       <div class="product-card">
         <img
-          src="{{url_for('static', filename='img/' + product.img)}}"
+          src="{{url_for('static', filename='img/' + product.img_filename)}}"
           alt="Paracetamol"
         />
         <h3>{{product.title}}</h3>

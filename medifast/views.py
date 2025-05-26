@@ -1,9 +1,10 @@
 from flask import render_template, Blueprint, Flask, request, flash, redirect, url_for, session
 from medifast.forms import SignUpForm, LogInForm, OrderForm
 from medifast.db import check_for_user, add_user, add_login_record, add_logout_record, get_products, add_order
-from medifast.session import get_user, get_shoppingcart,add_to_shoppingcart
+from medifast.session import get_user, get_shoppingcart,add_to_shoppingcart, shoppingcart_to_order
 from .helpers import login_required
 from hashlib import sha256
+from datetime import datetime
 import re
 
 bp = Blueprint('main', __name__)
@@ -45,7 +46,9 @@ def order():
     user = get_user()
     if form.validate_on_submit():
         try:
-            add_order(form, user.id)
+            datetime=datetime.now()
+            order = shoppingcart_to_order(form, shoppingcart, user.id, )
+            add_order(order)
             return redirect(url_for("main.home"))
         except:
             flash("Server issues. Try again later.")

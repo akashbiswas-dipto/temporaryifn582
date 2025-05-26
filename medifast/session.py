@@ -17,7 +17,6 @@ def get_user():
             password="",
             user_type=user['user_type']
         )
-    print("user", None)
     return None
     
 def get_shoppingcart():
@@ -62,10 +61,20 @@ def empty_shoppingcart():
         'items': []
     }
 
-def add_order(shoppingcart):
+def shoppingcart_to_order(form, shoppingcart, user_id, datetime):
     return Order(
         id=None,
-        status=OrderStatus
+        status=OrderStatus.PENDING,
+        userid=user_id,
+        amount=shoppingcart.total_cost(),
+        delivery_type=form.delivery_type.data,
+        payment_type=form.payment_type.data,
+        address=form.address.data,
+        customer_name=form.customer_name.data,
+        customer_phone=form.customer_phone.data,
+        customer_email=form.customer_email.data,
+        items=shoppingcart.items, 
+        date=datetime
     )
     pass
 
