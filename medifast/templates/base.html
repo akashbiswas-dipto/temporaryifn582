@@ -14,6 +14,7 @@
       rel="stylesheet"
       href="{{url_for('static', filename='css/styles.css')}}"
     />
+    {%block css %}{% endblock%}
   </head>
   <body>
     <header>
@@ -38,9 +39,24 @@
             <li>
               <a href="#"><span class="icon">🛒</span> Cart</a>
             </li>
+
             {% if session["user"] %}
             <li>
               <span>Hi, {{session["user"].username}}</span>
+            </li>
+            <li>
+              <a href="{{url_for('main.logout')}}"
+                ><span class="icon"></span>Logout</a
+              >
+            </li>
+            {% elif session["user"] and session["user_type"]=='0' %}
+            <li>
+              <span>Hi, {{session["user"].username}}</span>
+            </li>
+            <li>
+              <a href="{{url_for('main.logout')}}"
+                ><span class="icon"></span>Dashoard</a
+              >
             </li>
             <li>
               <a href="{{url_for('main.logout')}}"

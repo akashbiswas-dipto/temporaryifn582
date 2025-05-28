@@ -45,18 +45,17 @@ def add_logout_record(user_id):
 def get_products():
     cur = mysql.connection.cursor()
     cur.execute("""
-        SELECT id, name, description, price, category, quantity, keyword, prescription, img1, img2,img3 
-        FROM product
+        SELECT * FROM product
     """)
     rows = cur.fetchall()
     cur.close()
-    return [Product(str(row['id']), row['name'], row['description'], row['price'], row['category'], row['quantity'], row['keyword'],row['prescription'], row['img1'], row['img2'],row['img3']) for row in rows] 
-    
+    return [Product(str(row['id']), row['name'], row['description'], row['price'], row['quantity'], row['category'], row['keyword'],row['prescription'], row['img1'], row['img2'],row['img3']) for row in rows] 
+   
 def get_product(product_id):
     cur = mysql.connection.cursor()
     cur.execute("""
         SELECT id, name, description, price, category, quantity, keyword, prescription, img1, img2,img3 
-        FROM products WHERE id = %s
+        FROM product WHERE id = %s
     """, (product_id,))
     row = cur.fetchone()
     cur.close()

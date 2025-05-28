@@ -1,0 +1,35 @@
+.product_doc{
+    word-wrap: break-word;
+    margin-top: 40px;
+    text-align: left;
+}
+.product_doc h1{
+    font-size: 36px;
+    margin-bottom: 20px;
+
+}
+.product_doc h2{
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.product_doc select{
+    margin: 10px 0;
+    width: 200px;
+    height: 30px;
+    margin-bottom: 40px;
+}
+
+.product_doc a{
+    text-decoration: none;
+    color: #0a5275;
+    border: 1px solid #0a5275;
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
+  
+  .product_doc a:hover{
+    background-color: #0a5275;
+    color: white;
+  }
+  

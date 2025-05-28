@@ -21,16 +21,20 @@ def get_user():
     
 def get_shoppingcart():
     shoppingcart_data = session.get("shoppingcart")
+    print("get_shoppingcart:", shoppingcart_data)
     shoppingcart = ShoppingCart()
-    if isinstance(shoppingcart, dict):
+    print(isinstance(shoppingcart_data, dict))
+    print(type(shoppingcart_data))
+    if isinstance(shoppingcart_data, dict):
         for item in shoppingcart_data.get('items', []):
-            product = get_product(item['product']['id'])
+            product = get_product(item['product'])
             print("product from db", product)
+            print("item", item)
             if product:
                 shoppingcart.add_item(ShoppingCartItem(
-                    id=str(item['id']),
+                    id=item['id'],
                     product=product,
-                    quantity=product['quantity']
+                    quantity=item["quantity"]
                 ))
     return shoppingcart
 
@@ -40,7 +44,7 @@ def _save_shoppingcart_to_session(shoppingcart):
             {
                 'id': item.id,
                 'quantity': item.quantity,
-                'product': {item.product.id}
+                'product': item.product.id
             } for item in shoppingcart.items
         ]
     }
@@ -79,4 +83,3 @@ def shoppingcart_to_order(form, shoppingcart, user_id, datetime):
 
 def get_order():
     pass
-

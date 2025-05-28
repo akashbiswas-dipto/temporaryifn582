@@ -16,20 +16,21 @@ create table users (
 
 create table login_record(
     id INT NOT NULL AUTO_INCREMENT UNIQUE,
-    user_id int,
+    user_id INT,
     login_time datetime,
     logout_time datetime,
     primary key (id),
-    FOREIGN KEY (user_id) references Users(id)
-)
+    FOREIGN KEY (user_id) references users(id)
+); -- semicolon was missing 
+
 
 create table product (
-	id varchar(10) not null UNIQUE,
+	id varchar(255) not null UNIQUE, -- varchar value changed to 255 instead of 10, so that it matches with the table order.
     name varchar(255) not null,
     description varchar(255) not null,
 	price DECIMAL(10,2) not null,
 	quantity int not null,
-	category char(3) not null,
+	category varchar(100) not null,
     keyword varchar(20) not null,
 	prescription varchar(255) not null,
     img1 varchar(255) not null,
@@ -53,7 +54,7 @@ create table orders (
     customer_phone VARCHAR(20),
     primary key (id),
     FOREIGN KEY (user_id) REFERENCES users(id),
-	FOREIGN KEY (product_id) REFERENCES product(id)
+	FOREIGN KEY (product_id) REFERENCES product(id) 
 );
 
 

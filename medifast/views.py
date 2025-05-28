@@ -1,47 +1,57 @@
 from flask import render_template, Blueprint, Flask, request, flash, redirect, url_for, session
 from medifast.forms import SignUpForm, LogInForm, OrderForm
-from medifast.db import check_for_user, add_user, add_login_record, add_logout_record, get_products, add_order
+from medifast.db import check_for_user, add_user, add_login_record,get_product, add_logout_record, get_products, add_order
 from medifast.session import get_user, get_shoppingcart,add_to_shoppingcart, shoppingcart_to_order
 from .helpers import login_required
 from hashlib import sha256
 from datetime import datetime
 import re
+from collections import defaultdict
 
 bp = Blueprint('main', __name__)
 
 @bp.route('/')
 def home():
     products = get_products()
-    return render_template('index.html', products=products)
+    categories= defaultdict(list)
+    for product in products:
+        categories[product.category].append(product)
+    return render_template('index.html', categories=categories)
 
 @bp.route("/product")
-@login_required
 def productDetail():
     return render_template("productdetail.html")
 
+@bp.route("/product/<product_id>")
+def productDetailByID(product_id):
+    product= get_product(product_id)
+    if not product:
+        flash("Product not found.", "error")
+        return redirect(url_for("main.home"))
+    return render_template("productdetail.html", product=product )
+
 # shoppingcart page
 @bp.route("/cart")
-@login_required
 def cart():
     cart = get_shoppingcart()
     return render_template("basket.html", cart=cart)
 
 
 @bp.post('/cart/<int:product_id>/')
-@login_required
 def add_item_to_shoppingcart(product_id):
     add_to_shoppingcart(product_id)
     return redirect(url_for('main.cart'))
 
 
-@bp.post('/cart/<int:product_id>/<int:quantity>/')
-@login_required
-def add_item_to_shoppingcart_with_qty(product_id, quantity):
+@bp.post('/cart/add')
+def add_item_to_shoppingcart_with_qty():
+    product_id = request.form.get('product_id')
+    quantity = int(request.form.get('quantity', 1))
     add_to_shoppingcart(product_id, quantity)
+    flash("Item added to cart!", "info")
     return redirect(url_for('main.cart'))
 
 @bp.route("/checkout", methods=["GET", "POST"])
-@login_required
 def checkout():
     form = OrderForm()
     shoppingcart = get_shoppingcart()
@@ -59,7 +69,7 @@ def checkout():
         flash("Form validation failed.")
     return render_template("main.checkout", shoppingcart=shoppingcart)
 
-@bp.route('/login', methods=["GET", "POST"])
+@bp.route('/login', methods=["GET","POST"])
 def login():
     form = LogInForm()
     if form.validate_on_submit():
@@ -115,6 +125,7 @@ def signup():
         print("Form validation failed:",form.errors)
         flash("Form validation failed.", "error")
     return render_template("signup.html", form=form)
+
 
 @bp.route("/logout")
 @login_required
