@@ -44,6 +44,19 @@
             <li>
               <span>Hi, {{session["user"].username}}</span>
             </li>
+              {%if session["user"]["user_type"] | string =="1"%}
+              <li>
+                <a href="{{url_for('main.admindashboard', user_id=session["user"]["id"])}}"
+                  ><span class="icon"></span>Dashboard</a
+                >
+              </li>
+              {%else%}
+              <li>
+                <a href="{{url_for('main.customerdashboard', user_id=session["user"]["id"])}}"
+                  ><span class="icon"></span>Dashboard</a
+                >
+              </li>
+              {% endif%}
             <li>
               <a href="{{url_for('main.logout')}}"
                 ><span class="icon"></span>Logout</a

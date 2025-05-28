@@ -136,3 +136,9 @@ def logout():
     session.clear()
     flash("You have been logged out.")
     return redirect(url_for('main.home'))
+
+@bp.route("/admindashboard/<int:user_id>")
+@login_required
+def admindashboard():
+    user = get_user()
+    return True
