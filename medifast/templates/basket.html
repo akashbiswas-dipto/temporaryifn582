@@ -1,5 +1,10 @@
 {% extends "base.html" %} {% block title %}Your Basket{% endblock %} {% block
-content %}
+css %}
+<link
+  rel="stylesheet"
+  href="{{url_for('static', filename='css/basket.css')}}"
+/>
+{% endblock %}{% block content %}
 <div class="container py-5">
   <h2>Your Shopping Basket</h2>
   {% if cart %} {% for item in cart.items %}
@@ -7,7 +12,7 @@ content %}
     <div class="row align-items-center">
       <div class="col-md-4">
         <img
-          src="{{ url_for('static', filename='img/' ~ item.product.img1) }}"
+          src="{{ url_for('static', filename=item.product.img1) }}"
           alt="{{ item.product.name }}"
           class="img-fluid rounded"
           style="width: 250px"
@@ -19,11 +24,23 @@ content %}
         <p>
           <strong>Price:</strong> ${{ '%.2f' | format(item.product.price) }}
         </p>
-        <p><strong>Quantity:</strong> {{ item.quantity }}</p>
-        <p>
-          <strong>Item Total:</strong> ${{ '%.2f' | format(item.total_price())
-          }}
-        </p>
+        <form method="POST" action="/">
+          <div class="input-group mb-3" style="max-width: 150px">
+            <input
+              type="number"
+              name="quantity"
+              value="{{ item.quantity }}"
+              min="1"
+              class="form-control"
+            />
+            <p>
+              <strong>Item Total:</strong> ${{ '%.2f' |
+              format(item.total_price()) }}
+            </p>
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a href="">Delete</a>
+          </div>
+        </form>
       </div>
     </div>
   </div>

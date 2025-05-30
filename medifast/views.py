@@ -1,6 +1,6 @@
 from flask import render_template, Blueprint, Flask, request, flash, redirect, url_for, session
 from medifast.forms import SignUpForm, LogInForm, OrderForm
-from medifast.db import check_for_user, add_user, add_login_record,get_product, add_logout_record, get_products, add_order
+from medifast.db import check_for_user,admin_check_for_user, add_user, add_login_record,get_product, add_logout_record, get_products, add_order
 from medifast.session import get_user, get_shoppingcart,add_to_shoppingcart, shoppingcart_to_order
 from .helpers import login_required
 from hashlib import sha256
@@ -20,7 +20,11 @@ def home():
 
 @bp.route("/product")
 def productDetail():
-    return render_template("productdetail.html")
+    products = get_products()
+    categories= defaultdict(list)
+    for product in products:
+        categories[product.category].append(product)
+    return render_template('product.html', categories=categories)
 
 @bp.route("/product/<product_id>")
 def productDetailByID(product_id):
@@ -137,8 +141,36 @@ def logout():
     flash("You have been logged out.")
     return redirect(url_for('main.home'))
 
-@bp.route("/admindashboard/<int:user_id>")
+@bp.route("/admindashboard")
 @login_required
 def admindashboard():
-    user = get_user()
-    return True
+    user = admin_check_for_user()
+    return render_template('admin_panel/index.html',user=user)
+
+
+@bp.route('/customerdashboard/<int:user_id>')
+def customerdashboard(user_id):
+    ...
+    
+    
+""" @bp.route('/update_cart/<int:product_id>', methods=['POST'])
+def update_cart(product_id):
+    new_quantity = int(request.form['quantity'])
+    cart = session.get('cart', {})
+    pid = str(product_id)
+    if pid in cart:
+        cart[pid]['quantity'] = new_quantity
+    
+    session['cart'] = cart
+    flash('Cart updated successfully!', 'success')
+    return redirect(url_for('main.cart'))
+
+@bp.route('/delete_from_cart/<int:product_id>')
+def delete_from_cart(product_id):
+    cart = session.get('cart', {})
+    if product_id in cart:
+        del cart[product_id]
+    
+    session['cart'] = cart
+    flash('Item removed from cart!', 'info')
+    return redirect(url_for('main.cart')) """

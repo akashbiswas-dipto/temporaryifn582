@@ -2,6 +2,8 @@ from medifast.models import UserInfo, Product, Order, OrderStatus
 from werkzeug.security import check_password_hash
 from datetime import datetime
 from . import mysql
+import MySQLdb
+
 
 def check_for_user(email, password):
     cur = mysql.connection.cursor()
@@ -16,6 +18,29 @@ def check_for_user(email, password):
     if row:
         return UserInfo(str(row['id']), row['firstname'], row['surname'], row['email'], row['phone'],row['username'], row['password'],row['user_type'])
     return None
+
+def admin_check_for_user():
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute(""" SELECT * FROM users """)
+    rows = cur.fetchall()
+    print("db", rows)
+    cur.close()
+    users = []
+    if rows:
+        for row in rows:
+            user = UserInfo(
+                str(row['id']),
+                row['firstname'],
+                row['surname'],
+                row['email'],
+                row['phone'],
+                row['username'],
+                row['password'],
+                row['user_type']
+            )
+            users.append(user)
+    return users
+
 
 def add_user(form, hashed):
     user_type = "0"
