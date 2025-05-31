@@ -26,6 +26,6 @@ class OrderForm(FlaskForm):
     customer_name = StringField("Name:", validators= [InputRequired()])
     customer_email = StringField("Email:", validators = [InputRequired(), email()])
     customer_phone = StringField("Phone:", validators = [InputRequired()])
-    delivery_type = SelectField("Delivery Type:", AnyOf=([0,1,2]), validators=[DataRequired()])
-    payment_type = SelectField("Payment Method:", AnyOf=([0,1]), validators=[DataRequired()])
-
+    delivery_type = SelectField("Delivery Type:", choices=[(1, 'Express (15-20mins)'), (2, 'Regular (30-45mins)'), (3, 'Green Delivery'), (4, 'Pick Up')], validators=[DataRequired()])
+    payment_type = SelectField("Payment Method:", choices=[(1, 'Credit Card'), (2, 'Bank Debit'), (3, 'Cash on Delivery')], validators=[DataRequired()])
+    submit = SubmitField("Place Order")

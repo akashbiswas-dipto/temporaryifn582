@@ -1,4 +1,4 @@
-from medifast.models import UserInfo, Product, Order, OrderStatus
+from medifast.models import UserInfo, Product, Order
 from werkzeug.security import check_password_hash
 from datetime import datetime
 from . import mysql
@@ -89,8 +89,12 @@ def get_product(product_id):
 
 def add_order(order: Order):
     cur = mysql.connection.cursor()
+    cur.execute("""INSERT INTO orders (amount, order_date, address, delivery_type, payment_type, order_status, customer_name, customer_email, customer_phone) 
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)""", (order.amount, order.date,order.address,order.delivery_type, order.payment_type, order.status, order.customer_name, order.customer_email, order.customer_phone ))
+    order_id = cur.lastrowid
+
     for item in order.items:
-        cur.execute("""INSERT INTO orders (user_id, product_id, amount, order_date, address, delivery_type, payment_type, order_status, customer_name, customer_email, customer_phone) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""", (order.user_id, item.id, order.amount, order.date,order.address,order.delivery_type, order.payment_type, order.status, order.customer_name, order.customer_email, order.customer_phone ))
+        cur.execute("INSERT INTO order_items (user_id, order_id, product_id, quantity) VALUES (%s,%s,%s,%s)", (order.user_id, order_id, item.product.id, item.quantity))
     mysql.connection.commit()
     cur.close()
 

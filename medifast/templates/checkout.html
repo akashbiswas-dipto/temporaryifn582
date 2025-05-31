@@ -1,44 +1,80 @@
 {% extends "base.html" %} {% block title %}Checkout{% endblock %} {% block
-content %}
+content %} {% with messages = get_flashed_messages(category_filter='error') %}
+{% if messages %} {% for message in messages %}
+<div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+  {{ message }}
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+  ></button>
+  {% endfor %}
+</div>
+{% endif %} {% endwith %}
 
 <div class="container mt-4 mb-5">
   <h3>Checkout</h3>
+  {% if cart %}
   <form method="POST" action="{{ url_for('main.checkout') }}">
     {{ form.hidden_tag() }}
 
     <div class="mb-3">
       {{ form.customer_name.label(class="form-label") }} {{
-      form.customer_name(class="form-control") }}
+      form.customer_name(class="form-control") }} {% for error in
+      form.customer_name.errors %}
+      <p class="text-danger h6">{{ error }}</p>
+      {% endfor %}
     </div>
     <div class="mb-3">
       {{ form.customer_email.label(class="form-label") }} {{
-      form.customer_email(class="form-control") }}
+      form.customer_email(class="form-control") }} {% for error in
+      form.customer_email.errors %}
+      <p class="text-danger h6">{{ error }}</p>
+      {% endfor %}
     </div>
     <div class="mb-3">
       {{ form.customer_phone.label(class="form-label") }} {{
-      form.customer_phone(class="form-control") }}
+      form.customer_phone(class="form-control") }} {% for error in
+      form.customer_phone.errors %}
+      <p class="text-danger h6">{{ error }}</p>
+      {% endfor %}
     </div>
     <div class="mb-3">
       {{ form.address.label(class="form-label") }} {{
-      form.address(class="form-control") }}
+      form.address(class="form-control") }} {% for error in form.address.errors
+      %}
+      <p class="text-danger h6">{{ error }}</p>
+      {% endfor %}
     </div>
     <div class="mb-3">
       {{ form.payment_type.label(class="form-label") }} {{
-      form.payment_type(class="form-select") }}
+      form.payment_type(class="form-select") }} {% for error in
+      form.payment_type.errors %}
+      <p class="text-danger h6">{{ error }}</p>
+      {% endfor %}
     </div>
     <div class="mb-3">
       {{ form.delivery_type.label(class="form-label") }} {{
-      form.delivery_type(class="form-select") }}
+      form.delivery_type(class="form-select") }} {% for error in
+      form.delivery_type.errors %}
+      <p class="text-danger h6">{{ error }}</p>
+      {% endfor %}
     </div>
-
-    <h5 class="mt-3">Order Total: ${{ '%.2f'|format(order_total) }}</h5>
-    <button
+    <h5 class="mt-3">Order Total: ${{ '%.2f'|format(cart.total_cost()) }}</h5>
+    <div class="mt-3 text-center">
+      {{ form.submit(class="btn btn-outline-primary")}}
+    </div>
+    <!-- <button
       type="submit"
       class="btn btn-success mt-3 w-100"
       style="background-color: #0a5275"
     >
       Place Order
-    </button>
+    </button> -->
+    {% else %}
+    <p>Your shoppingcart is empty.</p>
+    {% endif %}
   </form>
 </div>
 

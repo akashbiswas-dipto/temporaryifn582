@@ -4,10 +4,10 @@ from enum import Enum
 from typing import List
 from uuid import uuid4
 
-class OrderStatus(Enum):
-    PENDING = 1
-    CONFIRMED = 2
-    CANCELLED = 3
+# class OrderStatus(Enum):
+#     PENDING = 1
+#     CONFIRMED = 2
+#     CANCELLED = 3
 
 @dataclass
 class Product:
@@ -15,7 +15,7 @@ class Product:
     name: str
     description: str
     price: float
-    stock_qty: int
+    quantity: int
     category: str
     keyword: str
     prescription: str
@@ -45,12 +45,12 @@ class ShoppingCartItem:
     def total_price(self):
         return self.product.price * self.quantity
     
-    def increment_quantity(self):
-        self.quantity += 1
-
-    def decrement_quantity(self):
-        if self.quantity > 1:
-            self.quantity -= 1
+    def edit_quantity(self, quantity):
+        if quantity > 0:
+            self.quantity = quantity
+    # def decrement_quantity(self):
+    #     if self.quantity > 1:
+    #         self.quantity -= 1
 
 @dataclass
 class ShoppingCart:
@@ -77,15 +77,15 @@ class ShoppingCart:
 @dataclass
 class Order:
     id: str
-    status: OrderStatus
-    user_id: str
     amount: float
+    status: int
     delivery_type: int
-    payment_type: int
     address: str
+    payment_type: int
     customer_name: str
     customer_phone: str
     customer_email: str
+    user_id: int
     items: List[ShoppingCartItem] = field(default_factory=list)
     date: datetime = field(default_factory=lambda: datetime.now())
 

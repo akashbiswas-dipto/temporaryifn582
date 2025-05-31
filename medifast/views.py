@@ -1,7 +1,7 @@
 from flask import render_template, Blueprint, Flask, request, flash, redirect, url_for, session
 from medifast.forms import SignUpForm, LogInForm, OrderForm
 from medifast.db import check_for_user,admin_check_for_user, add_user, add_login_record,get_product, add_logout_record, get_products, add_order
-from medifast.session import get_user, get_shoppingcart,add_to_shoppingcart, shoppingcart_to_order
+from medifast.session import get_user, get_shoppingcart,add_to_shoppingcart, shoppingcart_to_order, remove_from_shoppingcart, update_item_from_shoppingcart, empty_shoppingcart
 from .helpers import login_required
 from hashlib import sha256
 from datetime import datetime
@@ -16,6 +16,7 @@ def home():
     categories= defaultdict(list)
     for product in products:
         categories[product.category].append(product)
+    print("category", categories.items())
     return render_template('index.html', categories=categories)
 
 @bp.route("/product")
@@ -38,6 +39,9 @@ def productDetailByID(product_id):
 @bp.route("/cart")
 def cart():
     cart = get_shoppingcart()
+    # check if the cart has item
+    if len(cart.items) == 0:
+        cart = None
     return render_template("basket.html", cart=cart)
 
 
@@ -55,23 +59,68 @@ def add_item_to_shoppingcart_with_qty():
     flash("Item added to cart!", "info")
     return redirect(url_for('main.cart'))
 
+@bp.post("/editcartitem/<string:item_id>/")
+def edit_cartitem(item_id):
+    quantity = request.form.get('quantity')
+    print("quantity", quantity)
+    if quantity == "0" or not quantity.isdigit():
+        flash("Quantity cannot be zero or float.", "error")
+        return redirect(url_for("main.cart"))
+    shoppingcart = get_shoppingcart()
+    item = shoppingcart.get_item(item_id)
+    print("update cart", item)
+    if item:
+        flash(f"{item.product.name} has updated.")
+        update_item_from_shoppingcart(item_id, int(quantity))
+    return redirect(url_for("main.cart"))
+
+# remove cart item route
+@bp.post('/removecartitem/<string:item_id>/')
+def remove_cartitem(item_id):
+    shoppingcart = get_shoppingcart()
+    item = shoppingcart.get_item(item_id)
+    print("remove item", item)  
+    if item:
+        flash(f"'{item.product.name}' removed from shoppingcart.", "info" )
+        remove_from_shoppingcart(item_id)
+    else:
+        flash("Item not found in shoppingcart.", "error")
+
+    return redirect(url_for('main.cart'))
+
+# empty the whole basket
+@bp.route("/empty_cartitem")
+def empty_cartitem():
+    empty_shoppingcart()
+    return redirect(url_for('main.cart'))
+
 @bp.route("/checkout", methods=["GET", "POST"])
 def checkout():
     form = OrderForm()
+    print("form", form.address.data)
     shoppingcart = get_shoppingcart()
+    # check if the cart is empty
+    print("shoppingcart", shoppingcart)
+    if len(shoppingcart.items) == 0:
+        shoppingcart = None
     user = get_user()
+    print("user id:", user.id)
     if form.validate_on_submit():
         try:
-            datetime=datetime.now()
-            order = shoppingcart_to_order(form, shoppingcart, user.id, )
+            order_datetime = datetime.now()
+            order = shoppingcart_to_order(form, shoppingcart, user.id, order_datetime)
+            print("change to order", order)
             add_order(order)
+            empty_shoppingcart()
             return redirect(url_for("main.home"))
-        except:
-            flash("Server issues. Try again later.")
+        # except TypeError:
+            # flash("Type issues. Try again later.", "error")
+        except ValueError:
+            flash("Value issues. Try again later.", "error")
     elif request.method == "POST":
         print("error:", form.errors)
         flash("Form validation failed.")
-    return render_template("main.checkout", shoppingcart=shoppingcart)
+    return render_template("checkout.html", cart=shoppingcart, form=form)
 
 @bp.route('/login', methods=["GET","POST"])
 def login():
@@ -150,27 +199,5 @@ def admindashboard():
 
 @bp.route('/customerdashboard/<int:user_id>')
 def customerdashboard(user_id):
-    ...
+    pass
     
-    
-""" @bp.route('/update_cart/<int:product_id>', methods=['POST'])
-def update_cart(product_id):
-    new_quantity = int(request.form['quantity'])
-    cart = session.get('cart', {})
-    pid = str(product_id)
-    if pid in cart:
-        cart[pid]['quantity'] = new_quantity
-    
-    session['cart'] = cart
-    flash('Cart updated successfully!', 'success')
-    return redirect(url_for('main.cart'))
-
-@bp.route('/delete_from_cart/<int:product_id>')
-def delete_from_cart(product_id):
-    cart = session.get('cart', {})
-    if product_id in cart:
-        del cart[product_id]
-    
-    session['cart'] = cart
-    flash('Item removed from cart!', 'info')
-    return redirect(url_for('main.cart')) """

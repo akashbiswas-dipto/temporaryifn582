@@ -1,5 +1,5 @@
 from medifast.db import get_product
-from medifast.models import UserInfo, ShoppingCart, ShoppingCartItem, Product, Order, OrderStatus
+from medifast.models import UserInfo, ShoppingCart, ShoppingCartItem, Product, Order
 from uuid import uuid4
 from flask import session
 
@@ -54,6 +54,12 @@ def add_to_shoppingcart(product_id, quantity=1):
     shoppingcart.add_item(ShoppingCartItem(product=get_product(product_id), quantity=quantity))
     _save_shoppingcart_to_session(shoppingcart)
 
+def update_item_from_shoppingcart(product_id,quantity):
+    shoppingcart = get_shoppingcart()
+    item = shoppingcart.get_item(product_id)
+    item.edit_quantity(quantity)
+    _save_shoppingcart_to_session(shoppingcart)
+
 def remove_from_shoppingcart(shoppingcart_item_id):
     shoppingcart = get_shoppingcart()
     shoppingcart.remove_item(shoppingcart_item_id)
@@ -64,22 +70,26 @@ def empty_shoppingcart():
         'items': []
     }
 
-def shoppingcart_to_order(form, shoppingcart, user_id, datetime):
-    return Order(
-        id=None,
-        status=OrderStatus.PENDING,
-        userid=user_id,
+def shoppingcart_to_order(form, shoppingcart, user_id, order_datetime):
+    print("entered session", user_id, form.delivery_type.data, shoppingcart.items)
+    print("form value", form.delivery_type.data, form.payment_type.data, form.address.data, form.customer_phone.data, form.customer_email.data, form.customer_name.data)
+    print(shoppingcart.total_cost())
+    order =  Order(
+        id="",
+        status=1,
+        user_id=user_id,
         amount=shoppingcart.total_cost(),
-        delivery_type=form.delivery_type.data,
-        payment_type=form.payment_type.data,
+        delivery_type=int(form.delivery_type.data),
         address=form.address.data,
+        payment_type=int(form.payment_type.data),
         customer_name=form.customer_name.data,
         customer_phone=form.customer_phone.data,
         customer_email=form.customer_email.data,
         items=shoppingcart.items, 
-        date=datetime
+        date=order_datetime
     )
-    pass
+    print(order)
+    return order 
 
 def get_order():
     pass
