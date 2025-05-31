@@ -74,6 +74,7 @@ messages %} {% for message in messages %}
         </form>
         <!-- delete button -->
         <form
+          class="my-3"
           method="POST"
           action="{{ url_for('main.remove_cartitem', item_id=item.id) }}"
         >
@@ -84,15 +85,18 @@ messages %} {% for message in messages %}
   </div>
   {% endfor %}
   <!-- Summary Section -->
-  <!-- empty the basket -->
-  <form action="{{url_for('main.empty_cartitem')}}">
-    <button class="btn btn-danger">Empty Cart</button>
-  </form>
+  <!-- Add new item -->
+  <div class="d-flex my-3 justify-content-around align-items-center">
+    <a href="{{url_for('main.productDetail')}}">
+      <button class="btn btn-primary">Add New Item</button>
+    </a>
+    <!-- empty cart -->
+    <form action="{{url_for('main.empty_cartitem')}}">
+      <button class="btn btn-danger">Empty Cart</button>
+    </form>
+  </div>
+
   <div class="summary border-top pt-4">
-    <h5>Order Summary</h5>
-    <ul class="list-unstyled">
-      <!-- <li><strong>Total:</strong> ${{ '%.2f' | format(cart.total_cost()) }}</li> -->
-    </ul>
     <a href="{{ url_for('main.checkout') }}">
       <button class="btn btn-success w-100" style="background-color: #0a5275">
         Proceed to Checkout

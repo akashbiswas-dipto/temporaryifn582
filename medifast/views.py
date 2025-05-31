@@ -1,6 +1,6 @@
 from flask import render_template, Blueprint, Flask, request, flash, redirect, url_for, session
 from medifast.forms import SignUpForm, LogInForm, OrderForm
-from medifast.db import check_for_user,admin_check_for_user, add_user, add_login_record,get_product, add_logout_record, get_products, add_order, search
+from medifast.db import check_for_user,admin_check_for_user, add_user, add_login_record,get_product, add_logout_record, get_products, add_order, search, search_by_category
 from medifast.session import get_user, get_shoppingcart,add_to_shoppingcart, shoppingcart_to_order, remove_from_shoppingcart, update_item_from_shoppingcart, empty_shoppingcart
 from .helpers import login_required
 from hashlib import sha256
@@ -37,9 +37,19 @@ def product_search():
         categories = None
     return render_template("index.html", categories=categories, query=query)
 
+@bp.route("/category/<string:category_name>")
+def filter_by_category(category_name):
+    results = search_by_category(category_name)
+    categories= defaultdict(list)
+    if results:
+        for product in results:
+            categories[product.category].append(product)
+    else:
+        categories = None
+    return render_template("index.html", categories=categories)
 
 @bp.route("/product")
-@login_required
+# @login_required
 def productDetail():
     products = get_products()
     categories= defaultdict(list)
@@ -59,7 +69,7 @@ def productDetailByID(product_id):
 
 # shoppingcart page
 @bp.route("/cart")
-@login_required
+# @login_required
 def cart():
     cart = get_shoppingcart()
     # check if the cart has item
@@ -69,14 +79,14 @@ def cart():
 
 
 @bp.post('/cart/<int:product_id>/')
-@login_required
+# @login_required
 def add_item_to_shoppingcart(product_id):
     add_to_shoppingcart(product_id)
     return redirect(url_for('main.cart'))
 
 
 @bp.post('/cart/add')
-@login_required
+# @login_required
 def add_item_to_shoppingcart_with_qty():
     product_id = request.form.get('product_id')
     quantity = int(request.form.get('quantity', 1))
@@ -85,7 +95,7 @@ def add_item_to_shoppingcart_with_qty():
     return redirect(url_for('main.cart'))
 
 @bp.post("/editcartitem/<string:item_id>/")
-@login_required
+# @login_required
 def edit_cartitem(item_id):
     quantity = request.form.get('quantity')
     print("quantity", quantity)
@@ -102,7 +112,7 @@ def edit_cartitem(item_id):
 
 # remove cart item route
 @bp.post('/removecartitem/<string:item_id>/')
-@login_required
+# @login_required
 def remove_cartitem(item_id):
     shoppingcart = get_shoppingcart()
     item = shoppingcart.get_item(item_id)
@@ -117,23 +127,23 @@ def remove_cartitem(item_id):
 
 # empty the whole basket
 @bp.route("/empty_cartitem")
-@login_required
+# @login_required
 def empty_cartitem():
     empty_shoppingcart()
     return redirect(url_for('main.cart'))
 
 @bp.route("/checkout", methods=["GET", "POST"])
-@login_required
+# @login_required
 def checkout():
     form = OrderForm()
-    print("form", form.address.data)
     shoppingcart = get_shoppingcart()
     # check if the cart is empty
-    print("shoppingcart", shoppingcart)
     if len(shoppingcart.items) == 0:
         shoppingcart = None
     user = get_user()
-    print("user id:", user.id)
+    if not user:
+        flash("You have not yet logged in.", "error")
+        return redirect(url_for('main.login'))
     if form.validate_on_submit():
         try:
             order_datetime = datetime.now()
@@ -211,7 +221,7 @@ def signup():
 
 
 @bp.route("/logout")
-@login_required
+# @login_required
 def logout():
     user = get_user()
     # insert the logout time
@@ -221,7 +231,7 @@ def logout():
     return redirect(url_for('main.home'))
 
 @bp.route("/admindashboard")
-@login_required
+# @login_required
 def admindashboard():
     user = admin_check_for_user()
     return render_template('admin_panel/index.html',user=user)

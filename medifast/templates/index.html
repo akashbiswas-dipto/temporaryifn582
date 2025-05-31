@@ -35,42 +35,79 @@ in messages %}
   </div>
 </section>
 
-<main>
-  <div class="productlist">
-    <section id="products" class="product-grid">
-      <div class="product-category">
-        {% if categories %} {% for category, products_in_category in
-        categories.items() %}
-        <section class="product-category">
-          <div class="category_title">
-            <h2>{{category}}</h2>
-          </div>
-          {% for product in products_in_category %}
-          <div class="product_list">
-            <a
-              href="{{ url_for('main.productDetailByID', product_id=product.id )}}"
-            >
-              <img src="{{url_for('static',filename=product.img1)}}" />
-              <h3>{{ product.name}}</h3>
-              <p>{{product.price}}</p>
-              <a
-                href=""
-                style="
-                  border: 2px solid black;
-                  padding: 5px 20px;
-                  border-radius: 5px;
-                "
-                >Add to Cart</a
-              >
-            </a>
-          </div>
-          {% endfor %}
-        </section>
+<div class="dropdown my-3">
+  <button
+    class="btn btn-primary dropdown-toggle"
+    type="button"
+    id="dropdownMenuButton1"
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+  >
+    Category
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+    <li>
+      <a
+        class="dropdown-item"
+        href="{{url_for('main.filter_by_category', category_name='pe')}}"
+        >protective equipment</a
+      >
+    </li>
+    <li>
+      <a
+        class="dropdown-item"
+        href="{{url_for('main.filter_by_category', category_name='med')}}"
+        >medicine</a
+      >
+    </li>
+    <li>
+      <a
+        class="dropdown-item"
+        href="{{url_for('main.filter_by_category', category_name='dt')}}"
+        >diagnose tools</a
+      >
+    </li>
+  </ul>
+</div>
 
-        {% endfor %} {% else %}
-        <p>No result</p>
-        {% endif%} {% endblock %}
-      </div>
-    </section>
+<div class="d-flex flex-column my-3">
+  {% if categories %} {% for category, products_in_category in
+  categories.items() %}
+  <div>
+    {% if category == 'pe'%} {% set category = 'Protective Equipment' %}
+    <h1 class="col-12 text-center mt-3">{{ category}}</h1>
+    {% elif category == 'med' %} {% set category = 'Medicine' %}
+    <h1 class="col-12 text-center mt-3">{{ category}}</h1>
+    {% else %} {% set category = 'Diagnose Tools' %}
+    <h1 class="col-12 text-center mt-3">{{ category}}</h1>
+    {% endif %}
   </div>
-</main>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for product in products_in_category %}
+
+    <div class="col">
+      <div class="card">
+        <a
+          href="{{ url_for('main.productDetailByID', product_id=product.id )}}"
+        >
+          <img
+            src="{{url_for('static',filename=product.img1)}}"
+            class="card-img-top"
+            alt="medicine"
+          />
+          <div class="card-body">
+            <h5 class="h4 mb-3">{{ product.name}}</h5>
+            <p class="h5">${{product.price}}</p>
+            <a href="" class="btn btn-primary">Add to Cart</a>
+          </div>
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<h1>No result</h1>
+{% endif%} {% endblock %}

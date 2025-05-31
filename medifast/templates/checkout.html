@@ -14,8 +14,31 @@ content %} {% with messages = get_flashed_messages(category_filter='error') %}
 {% endif %} {% endwith %}
 
 <div class="container mt-4 mb-5">
-  <h3>Checkout</h3>
+  <h3>Order Summary</h3>
+
   {% if cart %}
+  <table class="table table-secondary table-striped-columns">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Qty</th>
+        <th scope="col">Total_Price ($)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart.items%}
+      <tr>
+        <td>{{ item.product.name}}</td>
+        <td>{{ item.quantity}}</td>
+        <td>{{ item.total_price()}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <h5 class="my-3 float-right font-weight-bold">
+    Order Total: ${{ '%.2f'|format(cart.total_cost()) }}
+  </h5>
+  <h3 class="text-center">Checkout Form</h3>
   <form method="POST" action="{{ url_for('main.checkout') }}">
     {{ form.hidden_tag() }}
 
@@ -47,21 +70,23 @@ content %} {% with messages = get_flashed_messages(category_filter='error') %}
       <p class="text-danger h6">{{ error }}</p>
       {% endfor %}
     </div>
-    <div class="mb-3">
-      {{ form.payment_type.label(class="form-label") }} {{
-      form.payment_type(class="form-select") }} {% for error in
-      form.payment_type.errors %}
-      <p class="text-danger h6">{{ error }}</p>
-      {% endfor %}
+    <div class="row">
+      <div class="mb-3 col-6">
+        {{ form.payment_type.label(class="form-label") }} {{
+        form.payment_type(class="form-select") }} {% for error in
+        form.payment_type.errors %}
+        <p class="text-danger h6">{{ error }}</p>
+        {% endfor %}
+      </div>
+      <div class="mb-3 col-6">
+        {{ form.delivery_type.label(class="form-label") }} {{
+        form.delivery_type(class="form-select") }} {% for error in
+        form.delivery_type.errors %}
+        <p class="text-danger h6">{{ error }}</p>
+        {% endfor %}
+      </div>
     </div>
-    <div class="mb-3">
-      {{ form.delivery_type.label(class="form-label") }} {{
-      form.delivery_type(class="form-select") }} {% for error in
-      form.delivery_type.errors %}
-      <p class="text-danger h6">{{ error }}</p>
-      {% endfor %}
-    </div>
-    <h5 class="mt-3">Order Total: ${{ '%.2f'|format(cart.total_cost()) }}</h5>
+
     <div class="mt-3 text-center">
       {{ form.submit(class="btn btn-outline-primary")}}
     </div>

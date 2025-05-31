@@ -7,11 +7,17 @@ import MySQLdb
 def search(query):
     cur = mysql.connection.cursor()
     q = f"%{query}%"
-    cur.execute("SELECT * FROM product WHERE name LIKE %s OR keyword LIKE %s OR category LIKE %s", (q, q, q))
+    cur.execute("SELECT * FROM product WHERE name LIKE %s OR keyword LIKE %s", (q, q))
     rows = cur.fetchall()
     cur.close()
     return [Product(str(row['id']), row['name'], row['description'], row['price'], row['quantity'], row['category'], row['keyword'],row['prescription'], row['img1'], row['img2'],row['img3']) for row in rows] 
-    
+
+def search_by_category(category):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM product WHERE category = %s", (category,))
+    rows = cur.fetchall()
+    cur.close()
+    return [Product(str(row['id']), row['name'], row['description'], row['price'], row['quantity'], row['category'], row['keyword'],row['prescription'], row['img1'], row['img2'],row['img3']) for row in rows] 
 
 def check_for_user(email, password):
     cur = mysql.connection.cursor()
@@ -49,7 +55,6 @@ def admin_check_for_user():
             users.append(user)
     return users
 
-
 def add_user(form, hashed):
     user_type = "0"
     cur = mysql.connection.cursor()
@@ -75,6 +80,7 @@ def add_logout_record(user_id):
     mysql.connection.commit()
     cur.close() 
 
+
 def get_products():
     cur = mysql.connection.cursor()
     cur.execute("""
@@ -83,7 +89,7 @@ def get_products():
     rows = cur.fetchall()
     cur.close()
     return [Product(str(row['id']), row['name'], row['description'], row['price'], row['quantity'], row['category'], row['keyword'],row['prescription'], row['img1'], row['img2'],row['img3']) for row in rows] 
-   
+
 def get_product(product_id):
     cur = mysql.connection.cursor()
     cur.execute("""
@@ -93,7 +99,6 @@ def get_product(product_id):
     row = cur.fetchone()
     cur.close()
     return Product(str(row['id']), row['name'], row['description'], row['price'], row['category'], row['quantity'], row['keyword'],row['prescription'], row['img1'], row['img2'],row['img3'])
-
 
 def add_order(order: Order):
     cur = mysql.connection.cursor()
