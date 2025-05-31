@@ -4,6 +4,14 @@ from datetime import datetime
 from . import mysql
 import MySQLdb
 
+def search(query):
+    cur = mysql.connection.cursor()
+    q = f"%{query}%"
+    cur.execute("SELECT * FROM product WHERE name LIKE %s OR keyword LIKE %s OR category LIKE %s", (q, q, q))
+    rows = cur.fetchall()
+    cur.close()
+    return [Product(str(row['id']), row['name'], row['description'], row['price'], row['quantity'], row['category'], row['keyword'],row['prescription'], row['img1'], row['img2'],row['img3']) for row in rows] 
+    
 
 def check_for_user(email, password):
     cur = mysql.connection.cursor()

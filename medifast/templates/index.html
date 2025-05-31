@@ -39,7 +39,8 @@ in messages %}
   <div class="productlist">
     <section id="products" class="product-grid">
       <div class="product-category">
-        {% for category, products_in_category in categories.items() %}
+        {% if categories %} {% for category, products_in_category in
+        categories.items() %}
         <section class="product-category">
           <div class="category_title">
             <h2>{{category}}</h2>
@@ -65,7 +66,10 @@ in messages %}
           </div>
           {% endfor %}
         </section>
-        {% endfor %} {% endblock %}
+
+        {% endfor %} {% else %}
+        <p>No result</p>
+        {% endif%} {% endblock %}
       </div>
     </section>
   </div>

@@ -1,4 +1,8 @@
 {% extends 'base.html'%} {% block content%}
-<h1>500 Error</h1>
-<h5>Server issues. Try again later.</h5>
+<section class="error-page">
+  <img src="{{url_for('static', filename='img/500.png')}}" alt="500 error" />
+  <h1>Internal Server Error</h1>
+  <p>Access another page.</p>
+  <a href="{{url_for('main.home')}}" class="back-button">Go back home</a>
+</section>
 {% endblock%}

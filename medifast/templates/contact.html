@@ -1,0 +1,26 @@
+{% extends "base.html" %} {% block title %} Contact Page {% endblock %} {%block
+content%}
+<section>
+  <div class="contact-container">
+    <img
+      src="{{ url_for('static', filename='img/MediFast-logo-in-blue.ico')}}"
+      alt="MediFast logo"
+    />
+    <h1>Contact Us</h1>
+    <div class="contact-wrapper">
+      <div class="contact-info">
+        <h2>MediFast Contact Details:</h2>
+        <p>
+          <strong>Address:</strong> QUT Gardens Point, Brisbane City, QLD,
+          Australia
+        </p>
+        <p><strong>Phone:</strong> +61 406 566 566</p>
+        <p><strong>Email:</strong> ifn582@gmail.com</p>
+      </div>
+    </div>
+    <a href="{{url_for('main.home')}}" class="back-button-contact"
+      >Go back home</a
+    >
+  </div>
+</section>
+{%endblock%}

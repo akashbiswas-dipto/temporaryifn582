@@ -33,10 +33,18 @@
             <li><a href="{{url_for('main.productDetail')}}">Products</a></li>
             <li><a href="{{url_for('main.cart')}}">ShoppingCart</a></li>
             <li><a href="{{url_for('main.checkout')}}">Checkout</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
           </ul>
           <ul class="nav-actions">
+            <li class="nav-search">
+              <form action="{{ url_for('main.product_search')}}" method="GET">
+                <input
+                  type="text"
+                  name="query"
+                  placeholder="Search products..."
+                />
+                <button type="submit">🔍</button>
+              </form>
+            </li>
             <li>
               <a href="#"><span class="icon">🛒</span> Cart</a>
             </li>
@@ -102,6 +110,10 @@
       </main>
     </div>
     <footer>
+      <p>
+        Bulk orders or queries?
+        <a href="{{ url_for('main.contact')}}">Contact us.</a>
+      </p>
       <p>&copy; 2025 MediFast Online Store. All rights reserved.</p>
     </footer>
     <script

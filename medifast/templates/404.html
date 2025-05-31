@@ -1,6 +1,6 @@
 {% extends 'base.html'%} {% block content%}
 <section class="error-page">
-  <img src="{{url_for('static', filename='img/404.png')}}" alt="404" />
+  <img src="{{url_for('static', filename='img/404.png')}}" alt="404 error" />
   <h1>OOPS!</h1>
   <p>Sorry, the page you entered doesn't exist.</p>
   <a href="{{url_for('main.home')}}" class="back-button">Go back home</a>

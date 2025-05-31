@@ -76,7 +76,7 @@ def shoppingcart_to_order(form, shoppingcart, user_id, order_datetime):
     print(shoppingcart.total_cost())
     order =  Order(
         id="",
-        status=1,
+        status=0,
         user_id=user_id,
         amount=shoppingcart.total_cost(),
         delivery_type=int(form.delivery_type.data),
